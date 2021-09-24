@@ -1,0 +1,28 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
+class UserExtraData(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=13)
+    date_birth = models.DateField(null=True)
+    datetime_registered = models.DateTimeField(auto_now=True)
+    rating = models.IntegerField(blank=True, default=0)
+
+    class Meta:
+        verbose_name = 'Дельтовец'
+        verbose_name_plural = 'Дельтовцы'
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserExtraData.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userextradata.save()
