@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}User profile{% endblock %}
+
+{% block content %}
+    <p>{{ object.username }}</p>
+    <p>{{ object.first_name }}</p>
+    <p>{{ object.last_name }}</p>
+    <p>{{ object.email }}</p>
+    <p>{{ object.rating }}</p>
+{% endblock %}
