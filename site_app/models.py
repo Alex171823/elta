@@ -7,7 +7,6 @@ class UserExtraData(models.Model):
     avatar = models.CharField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=13)
     date_birth = models.DateField(null=True)
-    datetime_registered = models.DateTimeField(auto_now=True)
     rating = models.IntegerField(blank=True, default=0)
 
     class Meta:
