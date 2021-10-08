@@ -2,4 +2,3 @@ Django==3.2.7
 djangorestframework==3.12.4
 flake8==3.9.2
 faker==9.2.0
-ipython==7.28.0
