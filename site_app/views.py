@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import UpdateView, DetailView
+from django.urls import reverse
 
 from .forms import UserRegistrationForm, LoginForm, PasswordForm
 from .serializers import UserSerializer
 from rest_framework import generics
-
 
 """
 Start page
@@ -25,6 +25,7 @@ Api
 """
 
 
+# снести
 class UserApiView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -35,6 +36,7 @@ Profiles
 """
 
 
+# работает
 class UserProfileView(LoginRequiredMixin, DetailView):
     # login_url = 'login'
 
@@ -43,6 +45,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     fields = ['username', 'first_name', 'last_name', 'email', 'rating']
 
 
+# падает
 class ChangeUserInfoView(LoginRequiredMixin, UpdateView):
     # login_url = 'login'
 
@@ -57,6 +60,7 @@ authorization, authentification and so on
 """
 
 
+# раьотает, переделать рэдирект
 def user_register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -73,6 +77,7 @@ def user_register(request):
     return render(request, 'registration.html', {'user_form': user_form})
 
 
+# работает, переделать редирект
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -82,7 +87,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('startpage')
+                    return redirect('userprofile', pk=request.user.pk)
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -92,11 +97,13 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
+# работает
 def user_logout(request):
     logout(request)
     return render(request, 'logout.html')
 
 
+# работает
 def user_change_password(request):
     if request.user.is_authenticated:
         pk = request.user.pk
