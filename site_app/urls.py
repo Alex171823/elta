@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     # startpage
-    path('startpage/', views.startpage, name='startpage'),
+    path('', views.startpage, name='startpage'),
 
     # api
     path('api/users/', views.UserApiView.as_view()),
