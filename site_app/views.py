@@ -77,7 +77,7 @@ def user_register(request):
     return render(request, 'main/registration.html', {'user_form': user_form})
 
 
-# работает, переделать редирект
+# работает
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)

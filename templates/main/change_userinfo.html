@@ -2,11 +2,11 @@
 
 {% block title %}Change user info{% endblock %}
 
-{% block content %}
+{% block content %} 
+    <h1>Отступ</h1>
     <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Change">
     </form>
-
     <p>You can also <a href= {% url "change_password" %} > change your password.</a></p>
 {% endblock %}
