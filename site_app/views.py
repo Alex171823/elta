@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, TemplateView
 from django.urls import reverse
 
 from .forms import UserRegistrationForm, LoginForm, PasswordForm
@@ -16,8 +16,8 @@ Start page
 """
 
 
-def startpage(request):
-    return HttpResponse('Вы находитесь на стартовой странице')
+class StartPageView(TemplateView):
+    template_name = "front_page.html"
 
 
 """

@@ -1,62 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-
-{# HEAD + BOOTSTRAP/CSS #}
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8"/>
+    {% load static %}
+    <title>
+      {% block tittle %}
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css" >
+    <title></title>
 
-{#    {% load static %}#}
-{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
-{#    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">#}
+    {% block addons %}
+    {% endblock %}
 
-{#    {% block extra_css %}#}
-{#    {% endblock %}#}
-{#    {% block extra_js %}#}
-{#    {% endblock %}#}
 </head>
-
 <body>
 
-{# NAVIGATION BAR #}
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link active" href="{% url 'startpage'%}">На главную страницу</a>
+    </li>
+    {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'userprofile' request.user.pk %}">Мой кабинет</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login'%}">Войти</a>
+      </li>
+    {% endif %}
+  </ul>
 
-{#<nav class="navbar navbar-expand-lg navbar-light bg-light">#}
-{#  <div class="container-fluid">#}
-{#    <a class="navbar-brand" href={% url "startpage" %}>Practice</a>#}
-{#  </div>#}
+    {%block content%}
+    {%endblock%}
 
-{#  <div class="container-fluid">#}
-{#    <a class="navbar-brand" href={% url "login" %}>Log-in</a>#}
-{#  </div>#}
-
-{#    <div class="container-fluid">#}
-{#    <a class="navbar-brand" href={% url "logout" %}>Log-out</a>#}
-{#  </div>#}
-{#</nav>#}
-
-{% block content %}
-{% endblock %}
-
-{# PAGINATION #}
-
-{#<nav aria-label="Page navigation example">#}
-{#    {% if page_obj %}#}
-{#      <ul class="pagination">#}
-{#        {% if page_obj.has_previous %}#}
-{#            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>#}
-{#            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>#}
-{#    {% endif %}#}
-{##}
-{#        <li class="page-item"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>#}
-{##}
-{#      {% if page_obj.has_next %}#}
-{#        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>#}
-{#          <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>#}
-{#      {% endif %}#}
-{#      </ul>#}
-{#    {% endif %}#}
-{#</nav>#}
-
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link active" href="https://www.instagram.com/club.delta.kh/">Instagram</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="https://www.facebook.com/club.delta.kh/">Facebook</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">+380957777777</a>
+    </li>
+  </ul>
 </body>
 </html>
