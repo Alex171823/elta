@@ -5,9 +5,6 @@ urlpatterns = [
     # startpage
     path('', views.StartPageView.as_view(), name='startpage'),
 
-    # api
-    path('api/users/', views.UserApiView.as_view()),
-
     path('userprofile/<int:pk>', views.UserProfileView.as_view(), name='userprofile'),
     path('change_userprofile/', views.ChangeUserInfoView.as_view(), name='change_profile'),
     path('register/', views.user_register, name='register'),

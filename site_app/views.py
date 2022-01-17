@@ -8,8 +8,6 @@ from django.views.generic import UpdateView, DetailView, TemplateView
 from django.urls import reverse
 
 from .forms import UserRegistrationForm, LoginForm, PasswordForm
-from .serializers import UserSerializer
-from rest_framework import generics
 
 """
 Start page
@@ -18,18 +16,6 @@ Start page
 
 class StartPageView(TemplateView):
     template_name = "front_page.html"
-
-
-"""
-Api
-"""
-
-
-# снести
-class UserApiView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
 
 """
 Profiles
