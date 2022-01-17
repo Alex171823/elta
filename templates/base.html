@@ -24,11 +24,17 @@
       <li class="nav-item">
         <a class="nav-link active" href="{% url 'userprofile' request.user.pk %}">Мой кабинет</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="{% url 'logout' %}">Выйти</a>
+      </li>
     {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'login'%}">Войти</a>
       </li>
     {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'register'%}">Зарегистрироваться</a>
+      </li>
   </ul>
 
     {%block content%}
