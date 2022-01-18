@@ -1,12 +1,25 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block title %}Change user info{% endblock %}
 
-{% block content %} 
-    <h1>Отступ</h1>
-    <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Change">
-    </form>
-    <p>You can also <a href= {% url "change_password" %} > change your password.</a></p>
+{% block content %}
+<style type="text/css">
+  .form-group {
+    text-align: center;
+  }
+</style>
+
+    <div class="form-group">
+      <br>
+      <form method="post">{% csrf_token %}
+      {{ user_form|crispy }}
+      {{ extra_data_form|crispy }}
+      <br>
+      <input type="submit" value="Изменить">
+      </form>
+      <br>
+    </div>
+
 {% endblock %}

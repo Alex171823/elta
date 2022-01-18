@@ -3,11 +3,23 @@
 {% block title %}User profile{% endblock %}
 
 {% block content %}
-    <h1>Your information:</h1>
-    <h4>Your information:</h4>
-    <p>{{ object.username }}</p>
-    <p>{{ object.first_name }}</p>
-    <p>{{ object.last_name }}</p>
-    <p>{{ object.email }}</p>
-    <p>{{ object.rating }}</p>
+    <br>
+    <div class="row">
+      <div class="col-md-3">
+        <h1>Ваши данные:</h1>
+        <br>
+        <p>Username: {{ object.username }}</p>
+        <p>Имя: {{ object.first_name }}</p>
+        <p>Фамилия: {{ object.last_name }}</p>
+        <p>Имэйл: {{ object.email }}</p>
+        <p>Рэйтинг: {{ object.rating }}</p>
+        <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль.</a></p>
+      </div>
+      
+      <div class="col-md-9">
+
+      </div>
+
+      <br>
+    </div>
 {% endblock %}

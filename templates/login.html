@@ -1,11 +1,22 @@
 {% extends "base.html" %}
-
-{% block title %}Log-in{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>Log-in page</h1>
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Log-in">
-    </form>
+<style type="text/css">
+  .login {
+    text-align: center;
+  }
+</style>
+
+  <div class="login">
+    <h1>Войти в аккаунт</h1>
+    <div class="form-group">
+      <form method="post">{% csrf_token %}
+          {{ form|crispy }}
+          <br>
+          <input type="submit" class="btn btn-success" value="Войти">
+      </form>
+      <br>
+    </div>
+  </div>
 {% endblock %}

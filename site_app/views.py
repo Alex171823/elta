@@ -1,11 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import UpdateView, DetailView, TemplateView
-from django.urls import reverse
+from django.views.generic import DetailView, TemplateView
 
 from .forms import UserRegistrationForm, LoginForm, PasswordForm
 
@@ -17,27 +15,16 @@ Start page
 class StartPageView(TemplateView):
     template_name = "front_page.html"
 
+
 """
 Profiles
 """
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
-    # login_url = 'login'
-
     model = User
     template_name = 'userprofile.html'
     fields = ['username', 'first_name', 'last_name', 'email', 'rating']
-
-
-# падает
-class ChangeUserInfoView(LoginRequiredMixin, UpdateView):
-    # login_url = 'login'
-
-    model = User
-    template_name = 'change_userinfo.html'
-    fields = ['username', 'first_name', 'email', 'is_active']
-    username = None
 
 
 """
@@ -72,13 +59,12 @@ def user_login(request):
                     login(request, user)
                     return redirect('userprofile', pk=request.user.pk)
                 else:
-                    return HttpResponse('Disabled account')
+                    return HttpResponse('Disabled account. Please connect admin of the site.')
             else:
-                return HttpResponse('Invalid login')
+                return HttpResponse("Can't sign you in. Please connect admin of the site.")
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
-
 
 
 def user_logout(request):
@@ -86,18 +72,20 @@ def user_logout(request):
     return render(request, 'logout.html')
 
 
-
 def user_change_password(request):
     if request.user.is_authenticated:
         pk = request.user.pk
-        u = get_object_or_404(User, pk=pk)
-        print(u.username)
+        user = get_object_or_404(User, pk=pk)
         if request.method == 'POST':
             form = PasswordForm(request.POST)
             if form.is_valid():
-                password = form.cleaned_data['password2']
-                u.set_password(make_password(password))
-                u.save()
+                new_password = form.cleaned_data['password2']
+                print(new_password)
+                user.set_password(new_password)
+                user.save()
+                return redirect('login')
+            else:
+                return HttpResponse('form is not valid')
         else:
             form = PasswordForm()
         return render(request, 'reset_password.html', {'form': form, 'pk': pk})

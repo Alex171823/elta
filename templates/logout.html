@@ -3,6 +3,16 @@
 {% block title %}Logout{% endblock %}
 
 {% block content %}
+<style type="text/css">
+  .logout-congrats {
+    text-align: center;
+  }
+</style>
+
+  <div class="logout-congrats">
+    <br>
     <h1>Congrats!</h1>
-    <p>You have been succesfully logged out. You can <a href={% url "login" %}>log-in</a> again.</p>
+    <p>Вы успешно вышли из своей учетной записи. Вы можете <a href="{% url 'login' %}">войти</a> снова.</p>
+    <br>
+  </div>
 {% endblock %}
