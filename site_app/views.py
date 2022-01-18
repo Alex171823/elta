@@ -22,7 +22,6 @@ Profiles
 """
 
 
-# работает
 class UserProfileView(LoginRequiredMixin, DetailView):
     # login_url = 'login'
 
@@ -46,7 +45,6 @@ authorization, authentification and so on
 """
 
 
-# раьотает, переделать рэдирект
 def user_register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
@@ -63,7 +61,6 @@ def user_register(request):
     return render(request, 'registration.html', {'user_form': user_form})
 
 
-# работает, переделать редирект
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -83,13 +80,13 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
-# работает
+
 def user_logout(request):
     logout(request)
     return render(request, 'logout.html')
 
 
-# работает
+
 def user_change_password(request):
     if request.user.is_authenticated:
         pk = request.user.pk
