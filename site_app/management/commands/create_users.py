@@ -11,6 +11,7 @@ from site_app.models import UserExtraData
 fake = Faker()
 
 
+# will not work
 class Command(BaseCommand):
     help = u'Fills database with some data'  # noqa A003
 

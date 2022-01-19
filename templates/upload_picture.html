@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+</style>
+    <div class="form-group">
+        <form method="post" type="file" class="form-control-file" id="exampleFormControlFile1" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <br>
+            <button type="submit" class="btn btn-success">Загрузить</button>
+        </form>
+
+      <br>
+    </div>
+
+{% endblock %}

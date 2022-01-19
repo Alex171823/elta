@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from site_app.models import UserImages
+
 
 class PasswordForm(forms.Form):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
@@ -14,7 +16,6 @@ class PasswordForm(forms.Form):
 
 
 class UserRegistrationForm(forms.ModelForm, PasswordForm):
-
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email', 'last_name')
@@ -23,11 +24,18 @@ class UserRegistrationForm(forms.ModelForm, PasswordForm):
             'email': 'Электронная почта',
             'last_name': 'Фамилия'
         }
-        help_texts = {
-            'username': None,
-        }
 
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='username')
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+
+
+class UserUploadImageForm(forms.ModelForm):
+    class Meta:
+        model = UserImages
+        exclude = ['user']
+
+        widgets = {
+            'picture': forms.ClearableFileInput(attrs={'multiple': True, }),
+        }

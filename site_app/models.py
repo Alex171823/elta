@@ -12,3 +12,8 @@ class UserExtraData(models.Model):
     class Meta:
         verbose_name = 'Дельтовец'
         verbose_name_plural = 'Дельтовцы'
+
+
+class UserImages(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    picture = models.ImageField(upload_to='pictures')

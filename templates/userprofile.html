@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}User profile{% endblock %}
-
 {% block content %}
     <br>
     <div class="row">
@@ -17,7 +15,7 @@
       </div>
       
       <div class="col-md-9">
-
+        <h3><a href="{% url 'upload_picture' %}">Загрузить </a> свое изображение</h3>
       </div>
 
       <br>

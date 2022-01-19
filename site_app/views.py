@@ -1,11 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import DetailView, TemplateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, TemplateView, FormView
 
-from .forms import UserRegistrationForm, LoginForm, PasswordForm
+from .forms import UserRegistrationForm, LoginForm, PasswordForm, UserUploadImageForm
+from .models import UserImages
 
 """
 Start page
@@ -88,6 +91,24 @@ def user_change_password(request):
                 return HttpResponse('form is not valid')
         else:
             form = PasswordForm()
-        return render(request, 'reset_password.html', {'form': form, 'pk': pk})
+        return render(request, 'reset_password.html', {'form': form})
+    else:
+        return redirect('login')
+
+
+def user_upload_picture(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UserUploadImageForm(request.POST, request.FILES)
+            files = request.FILES.getlist('picture')
+            print(files)
+            if form.is_valid():
+                for f in files:
+                    instance = UserImages(user=request.user, picture=f)
+                    instance.save()
+                return redirect('userprofile', request.user.pk)
+        else:
+            form = UserUploadImageForm()
+        return render(request, 'upload_picture.html', {'form': form})
     else:
         return redirect('login')
