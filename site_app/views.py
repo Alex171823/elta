@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -110,5 +111,25 @@ def user_upload_picture(request):
         else:
             form = UserUploadImageForm()
         return render(request, 'upload_picture.html', {'form': form})
+    else:
+        return redirect('login')
+
+# на данный момент по ссылке /userprofile/edit/ пользователя закидывает на страничку, где он может подтвердить,
+# что хочет изменить данные
+# после нажатия кнопки пока что падает!!! постараюсь доработать в свободное от работы время. MUCH LOVE !!!
+
+
+def edit_profile(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UserChangeForm(request.POST, instance=request.user)
+
+            if form.is_valid():
+                form.save()
+                return redirect('userprofile', request.user.pk)
+        else:
+            form = UserChangeForm(instance=request.user)
+            args = {'form': form}
+            return render(request, 'change_userinfo.html', args)
     else:
         return redirect('login')

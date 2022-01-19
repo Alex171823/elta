@@ -14,10 +14,12 @@
     <div class="form-group">
       <br>
       <form method="post">{% csrf_token %}
+      {{ form.as.p }}
+      <button type ="submit">Submit</button>
       {{ user_form|crispy }}
       {{ extra_data_form|crispy }}
       <br>
-      <input type="submit" value="Изменить">
+      <!-- <input type="submit" value="Изменить"> -->
       </form>
       <br>
     </div>
