@@ -1,8 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style type="text/css">
+  ul {
+       -webkit-column-count: 3;
+       -webkit-column-gap: 20px;
+       -moz-column-count: 3;
+       -moz-column-gap: 20px;
+       column-count: 3;
+       column-gap: 20px;
+       text-align:justify;
+  }
+  ul li {
+      width: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+  }
+
+  ul li a img,
+  ul li a {
+      width: inherit;
+  }
+  ul li a span {
+      display: block;
+  }
+</style>
+
     <br>
     <div class="row">
+
       <div class="col-md-3">
         <h1>Ваши данные:</h1>
         <br>
@@ -16,7 +43,17 @@
       
       <div class="col-md-9">
         <h3><a href="{% url 'upload_picture' %}">Загрузить </a> свое изображение</h3>
+
+        <ul>
+          {% for pic in images %}
+            <li><a href="{{ pic.picture.url }}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
+          {% empty %}
+          <h4> У вас нет изображений </h4>
+          {% endfor %}
+        </ul>
       </div>
+
+    </div>
 
       <br>
     </div>

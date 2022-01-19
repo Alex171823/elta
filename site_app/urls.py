@@ -14,5 +14,4 @@ urlpatterns = [
     path('userprofile/edit/', views.edit_profile, name='edit_profile'),
 
     path('upload_picture/', views.user_upload_picture, name='upload_picture'),
-    # path('upload_picture/', views.UserUploadPictures.as_view(), name='upload_picture'),
 ]

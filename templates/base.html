@@ -22,12 +22,12 @@
     .col-md-1 {
       text-align: center;
     }
-    .contacts {
+/*    .contacts {
       text-align: center;
     }
     #contact-link {
       display: inline !important;
-    }
+    }*/
   </style>
 
 </head>
@@ -37,7 +37,16 @@
     <!-- Navbar -->
     <div class="row">
       <div class="navbar">
-        <div class="col-md-9"></div>
+        <div class="col-md-1">
+          <a class="nav-link active" href="https://www.instagram.com/club.delta.kh/">Instagram</a>
+        </div>
+        <div class="col-md-1">
+          <a class="nav-link active" href="https://www.facebook.com/club.delta.kh/">Facebook</a>
+        </div>
+        <div class="col-md-1">
+          <a class="nav-link active" href="">+380957777777</a>
+        </div>
+        <div class="col-md-6"></div>
         <div class="col-md-1">
           <a class="nav-link active" href="{% url 'startpage'%}">На главную</a>
         </div>
@@ -57,12 +66,14 @@
         </div>
       </div>
     </div>
+    <br>
+    <br>
 
     {%block content%}
     {%endblock%}
 
-    <!-- contacts -->
-    <div class="row">
+<!-- contacts -->
+    <!-- <div class="row">
       <div class="col-md-3"></div>
       <div class="col-md-6">
         <div class="contacts">
@@ -72,7 +83,7 @@
         </div>
       </div>
       <div class="col-md-3"></div>
-    </div>
+    </div> -->
 
   </div>
 </body>

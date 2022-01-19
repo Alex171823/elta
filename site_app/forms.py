@@ -34,7 +34,7 @@ class LoginForm(forms.Form):
 class UserUploadImageForm(forms.ModelForm):
     class Meta:
         model = UserImages
-        exclude = ['user']
+        exclude = ['user', 'date_time_uploaded']
 
         widgets = {
             'picture': forms.ClearableFileInput(attrs={'multiple': True, }),

@@ -17,3 +17,7 @@ class UserExtraData(models.Model):
 class UserImages(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='pictures')
+    date_time_uploaded = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user} {self.picture} {self.date_time_uploaded}"

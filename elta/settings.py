@@ -25,6 +25,8 @@ INSTALLED_APPS = [
 
     'site_app.apps.SiteAppConfig',
 
+    'django_extensions',
+
     'crispy_forms',
 ]
 

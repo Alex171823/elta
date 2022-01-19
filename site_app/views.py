@@ -30,6 +30,11 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = 'userprofile.html'
     fields = ['username', 'first_name', 'last_name', 'email', 'rating']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['images'] = UserImages.objects.filter(user_id=1).order_by('-date_time_uploaded')
+        return context
+
 
 """
 authorization, authentification and so on
