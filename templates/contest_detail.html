@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ object.name }}</h1>
+    <br>
+    <p>Описание: {{ object.description }}</p>
+    <p>Дата начала: {{ object.date_started }}</p>
+    <p>Дата окончания: {{ object.date_finished }}</p>
+    {% if object.active == True %}
+        <p>Конкурс активен</p>
+    {% endif %}
+    {% if object.active != True %}
+        <p>Конкурс неактивен</p>
+    {% endif %}
+{% endblock %}

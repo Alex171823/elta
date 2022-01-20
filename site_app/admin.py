@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserExtraData
+from .models import UserExtraData, Contest
 from django.contrib.auth.models import User
 
 
@@ -13,3 +13,4 @@ class UserModelAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
+admin.site.register(Contest)

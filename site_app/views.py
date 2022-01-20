@@ -6,10 +6,10 @@ from django.contrib.auth.forms import UserChangeForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, TemplateView, FormView
+from django.views.generic import DetailView, TemplateView, FormView, ListView
 
 from .forms import UserRegistrationForm, LoginForm, PasswordForm, UserUploadImageForm
-from .models import UserImages
+from .models import UserImages, Contest
 
 """
 Start page
@@ -147,3 +147,13 @@ def edit_profile(request):
             return render(request, 'change_userinfo.html', args)
     else:
         return redirect('login')
+
+
+class AllContestView(ListView):
+    model = Contest
+    template_name = 'all_contests.html'
+
+
+class ContestDetailView(DetailView):
+    model = Contest
+    template_name = 'contest_detail.html'

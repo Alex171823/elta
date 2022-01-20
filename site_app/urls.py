@@ -3,7 +3,6 @@ from . import views
 # from django.contrib.auth.views import login, logout
 
 urlpatterns = [
-    # startpage
     path('', views.StartPageView.as_view(), name='startpage'),
 
     path('userprofile/<int:pk>', views.UserProfileView.as_view(), name='userprofile'),
@@ -14,4 +13,8 @@ urlpatterns = [
     path('userprofile/edit/', views.edit_profile, name='edit_profile'),
 
     path('upload_picture/', views.user_upload_picture, name='upload_picture'),
+
+    path('contests/', views.AllContestView.as_view(), name='all_contests'),
+    path('contests/<int:pk>', views.ContestDetailView.as_view(), name='contest_detail'),
+
 ]

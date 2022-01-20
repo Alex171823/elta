@@ -21,3 +21,16 @@ class UserImages(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.picture} {self.date_time_uploaded}"
+
+
+class Contest(models.Model):
+    name = models.CharField(max_length=50)
+    users = models.ManyToManyField(User)
+    description = models.CharField(max_length=255)
+    pictures = models.ManyToManyField(UserImages)
+    date_started = models.DateField(auto_now=True)
+    date_finished = models.DateField()
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.name} {self.users} {self.description} {self.pictures}"
