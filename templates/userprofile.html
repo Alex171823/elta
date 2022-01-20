@@ -31,24 +31,28 @@
     <div class="row">
 
       <div class="col-md-3">
-        <h1>Ваши данные:</h1>
+        <h1>Данные:</h1>
         <br>
         <p>Username: {{ object.username }}</p>
         <p>Имя: {{ object.first_name }}</p>
         <p>Фамилия: {{ object.last_name }}</p>
         <p>Имэйл: {{ object.email }}</p>
         <p>Рэйтинг: {{ object.rating }}</p>
-        <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль.</a></p>
+        {% if request.user.id == current_user %}
+            <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль.</a></p>
+        {% endif %}
       </div>
       
       <div class="col-md-9">
-        <h3><a href="{% url 'upload_picture' %}">Загрузить </a> свое изображение</h3>
 
+        {% if request.user.id == current_user %}
+            <h3>Вы можете <a href="{% url 'upload_picture' %}">загрузить </a> свое изображение</h3>
+        {% endif %}
         <ul>
           {% for pic in images %}
             <li><a href="{{ pic.picture.url }}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
           {% empty %}
-          <h4> У вас нет изображений </h4>
+            <h4> Нет изображений </h4>
           {% endfor %}
         </ul>
       </div>

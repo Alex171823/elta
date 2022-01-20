@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharm
 .idea
+
+# my personal images while testing
+media/pictures/*

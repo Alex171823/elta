@@ -32,7 +32,8 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['images'] = UserImages.objects.filter(user_id=1).order_by('-date_time_uploaded')
+        context['images'] = UserImages.objects.filter(user_id=self.kwargs.get("pk")).order_by('-date_time_uploaded')
+        context['current_user'] = self.kwargs.get('pk')
         return context
 
 
@@ -107,11 +108,20 @@ def user_upload_picture(request):
         if request.method == 'POST':
             form = UserUploadImageForm(request.POST, request.FILES)
             files = request.FILES.getlist('picture')
-            print(files)
+
+            # getting size of all images for this user
+            q = UserImages.objects.filter(user=request.user)
+            all_images_size = 0
+            for el in q:
+                all_images_size += el.picture.size
+
             if form.is_valid():
                 for f in files:
-                    instance = UserImages(user=request.user, picture=f)
-                    instance.save()
+                    # so user won't be able to upload more than 500mb of files
+                    # should be done customizable later
+                    if all_images_size + f.size <= 104857600:
+                        instance = UserImages(user=request.user, picture=f)
+                        instance.save()
                 return redirect('userprofile', request.user.pk)
         else:
             form = UserUploadImageForm()
@@ -119,11 +129,10 @@ def user_upload_picture(request):
     else:
         return redirect('login')
 
+
 # на данный момент по ссылке /userprofile/edit/ пользователя закидывает на страничку, где он может подтвердить,
 # что хочет изменить данные
 # после нажатия кнопки пока что падает!!! постараюсь доработать в свободное от работы время. MUCH LOVE !!!
-
-
 def edit_profile(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
