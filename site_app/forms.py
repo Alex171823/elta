@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from site_app.models import UserImages
+from site_app.models import UserImages, UserExtraData
 
 
 class PasswordForm(forms.Form):
@@ -19,10 +19,15 @@ class UserRegistrationForm(forms.ModelForm, PasswordForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email', 'last_name')
+
         labels = {
             'first_name': 'Имя',
             'email': 'Электронная почта',
             'last_name': 'Фамилия'
+        }
+
+        help_texts = {
+            'username': None,
         }
 
 
@@ -38,4 +43,23 @@ class UserUploadImageForm(forms.ModelForm):
 
         widgets = {
             'picture': forms.ClearableFileInput(attrs={'multiple': True, }),
+        }
+
+
+class UserChangeExtraDataForm(forms.ModelForm):
+    class Meta:
+        model = UserExtraData
+        exclude = ['user', 'rating']
+
+
+class UserChangeDataForm(forms.ModelForm):
+    class Meta:
+        model = User
+        exclude = ['password', 'groups', 'user_permissions', 'is_staff',
+                   'is_active', 'is_superuser', 'last_login', 'date_joined']
+
+        labels = {
+            'first_name': 'Имя',
+            'email': 'Электронная почта',
+            'last_name': 'Фамилия'
         }

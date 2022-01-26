@@ -8,8 +8,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, TemplateView, FormView, ListView
 
-from .forms import UserRegistrationForm, LoginForm, PasswordForm, UserUploadImageForm
-from .models import UserImages, Contest
+from .forms import UserRegistrationForm, LoginForm, PasswordForm, UserUploadImageForm, UserChangeExtraDataForm, \
+    UserChangeDataForm
+from .models import UserImages, Contest, UserExtraData
 
 """
 Start page
@@ -82,6 +83,32 @@ def user_logout(request):
     return render(request, 'logout.html')
 
 
+# using 2 modelforms for User and UserExtraData models
+def edit_profile(request):
+    if request.user.is_authenticated:
+
+        # getting instances
+        user = get_object_or_404(User, pk=request.user.pk)
+        user_extra_data = get_object_or_404(UserExtraData, user=user)
+
+        # init forms
+        user_form = UserChangeDataForm(request.POST, instance=user)
+        extra_data_form = UserChangeExtraDataForm(request.POST, instance=user_extra_data)
+
+        if request.method == 'POST':
+            # validating
+            if user_form.is_valid() and extra_data_form.is_valid():
+                # saving changes
+                user_form.save()
+                extra_data_form.save()
+                return redirect('userprofile', request.user.pk)
+        else:
+            return render(request, 'change_userinfo.html', {'user_form': user_form,
+                                                            'extra_data_form': extra_data_form})
+    else:
+        return redirect('login')
+
+
 def user_change_password(request):
     if request.user.is_authenticated:
         pk = request.user.pk
@@ -126,25 +153,6 @@ def user_upload_picture(request):
         else:
             form = UserUploadImageForm()
         return render(request, 'upload_picture.html', {'form': form})
-    else:
-        return redirect('login')
-
-
-# на данный момент по ссылке /userprofile/edit/ пользователя закидывает на страничку, где он может подтвердить,
-# что хочет изменить данные
-# после нажатия кнопки пока что падает!!! постараюсь доработать в свободное от работы время. MUCH LOVE !!!
-def edit_profile(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            form = UserChangeForm(request.POST, instance=request.user)
-
-            if form.is_valid():
-                form.save()
-                return redirect('userprofile', request.user.pk)
-        else:
-            form = UserChangeForm(instance=request.user)
-            args = {'form': form}
-            return render(request, 'change_userinfo.html', args)
     else:
         return redirect('login')
 

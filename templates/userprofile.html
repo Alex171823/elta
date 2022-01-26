@@ -39,7 +39,7 @@
         <p>Имэйл: {{ object.email }}</p>
         <p>Рэйтинг: {{ object.rating }}</p>
         {% if request.user.id == current_user %}
-            <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль.</a></p>
+            <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль</a> или <a href="{% url 'edit_profile' %}">данные</a>.</p>
         {% endif %}
       </div>
       
