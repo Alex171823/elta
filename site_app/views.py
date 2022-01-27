@@ -1,18 +1,15 @@
 import os
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserChangeForm
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, TemplateView, FormView, ListView
+from django.shortcuts import get_object_or_404, redirect,  render
+from django.views.generic import DetailView, ListView, TemplateView
 
-from .forms import UserRegistrationForm, LoginForm, PasswordForm, UserUploadImageForm, UserChangeExtraDataForm, \
-    UserChangeDataForm
-from .models import UserImages, Contest, UserExtraData
+from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraDataForm, UserRegistrationForm, \
+    UserUploadImageForm
+from .models import Contest, UserExtraData, UserImages
 
 """
 Start page
@@ -35,7 +32,9 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['images'] = UserImages.objects.filter(user_id=self.kwargs.get("pk")).order_by('-date_time_uploaded')
+
+        context['images'] = UserImages.objects.filter(user_id=self.kwargs.get('pk')).order_by('-date_time_uploaded')
+        context['rating'] = UserExtraData.objects.get(user_id=self.kwargs.get('pk'))
         context['current_user'] = self.kwargs.get('pk')
         return context
 
@@ -55,6 +54,11 @@ def user_register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
+
+            # adding relative table for user
+            new_user_extra_data = UserExtraData(user_id=new_user.id, rating=0)
+            new_user_extra_data.save()
+
             return render(request, 'registration_done.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
@@ -119,7 +123,6 @@ def user_change_password(request):
             form = PasswordForm(request.POST)
             if form.is_valid():
                 new_password = form.cleaned_data['password2']
-                print(new_password)
                 user.set_password(new_password)
                 user.save()
                 return redirect('login')
@@ -152,8 +155,8 @@ def user_upload_picture(request):
                         instance = UserImages(user=request.user, picture=f)
                         instance.save()
                     else:
-                        return HttpResponse('Вы не можете загружать больше 500мб фотографий на сервер. Удалите некоторые'
-                                            ' ваши фото')
+                        return HttpResponse('Вы не можете загружать больше 500мб фотографий на сервер. '
+                                            'Удалите некоторые ваши фото')
                 return redirect('userprofile', request.user.pk)
         else:
             form = UserUploadImageForm()
@@ -186,7 +189,7 @@ def user_delete_photo(request, pk):
                     return HttpResponse('Картинка не найдена. Свяжитесь с администратором.')
             except UserImages.DoesNotExist:
                 return HttpResponse('Похоже, вы пытаетесь удалить чужое фото(фу так делать).'
-                                    ' Не надо ходить по url-ам, админ специально кнопочки вам прикрутил. В любом случае,'
-                                    ' свяжитесь с администратором.')
+                                    ' Не надо ходить по url-ам, админ специально кнопочки вам прикрутил. '
+                                    'В любом случае, свяжитесь с администратором.')
     else:
         return redirect('login')

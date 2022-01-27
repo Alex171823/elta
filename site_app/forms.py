@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from site_app.models import UserImages, UserExtraData
+from site_app.models import UserExtraData, UserImages
 
 
 class PasswordForm(forms.Form):

@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import UserExtraData, Contest
 from django.contrib.auth.models import User
+
+from .models import Contest, UserExtraData
 
 
 class UserExtraDataInLine(admin.StackedInline):

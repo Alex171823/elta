@@ -127,4 +127,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATE_INPUT_FORMATS = ['%d.%m.%Y',]
+DATE_INPUT_FORMATS = ['%d.%m.%Y']
