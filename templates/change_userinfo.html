@@ -9,13 +9,13 @@
 </style>
     <br>
     <div class="form-group">
-      <h1>Изменить пароль</h1>
+      <h1>Изменить свои данные</h1>
       <br>
       <form method="post">{% csrf_token %}
         {{ user_form|crispy }}
         {{ extra_data_form|crispy }}
         <br>
-        <input type="submit" value="Change">
+        <input type="submit" class="btn btn-success" value="Изменить">
       </form>
       <br>
     </div>

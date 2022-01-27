@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -144,11 +146,14 @@ def user_upload_picture(request):
 
             if form.is_valid():
                 for f in files:
-                    # so user won't be able to upload more than 500mb of files
+                    # so user won't be able to upload more than 500(100 for now) mb of files
                     # should be done customizable later
-                    if all_images_size + f.size <= 104857600:
+                    if all_images_size + f.size <= 104857600:    # 100mb
                         instance = UserImages(user=request.user, picture=f)
                         instance.save()
+                    else:
+                        return HttpResponse('Вы не можете загружать больше 500мб фотографий на сервер. Удалите некоторые'
+                                            ' ваши фото')
                 return redirect('userprofile', request.user.pk)
         else:
             form = UserUploadImageForm()
@@ -165,3 +170,23 @@ class AllContestView(ListView):
 class ContestDetailView(DetailView):
     model = Contest
     template_name = 'contest_detail.html'
+
+
+def user_delete_photo(request, pk):
+    if request.user.is_authenticated:
+        if request.method == 'GET':    # CHANGE TO POST
+            user = request.user
+            try:
+                picture = UserImages.objects.get(user=user, id=pk)
+                if picture:
+                    os.remove(picture.picture.path)
+                    picture.delete()
+                    return redirect('userprofile', request.user.pk)
+                else:
+                    return HttpResponse('Картинка не найдена. Свяжитесь с администратором.')
+            except UserImages.DoesNotExist:
+                return HttpResponse('Похоже, вы пытаетесь удалить чужое фото(фу так делать).'
+                                    ' Не надо ходить по url-ам, админ специально кнопочки вам прикрутил. В любом случае,'
+                                    ' свяжитесь с администратором.')
+    else:
+        return redirect('login')

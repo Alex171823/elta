@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 class UserExtraData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField("Аватарка", upload_to='pictures/avatars', blank=True)
     phone_number = models.CharField("Номер телефона", max_length=13)
     date_birth = models.DateField("Дата рождения", null=True)
     rating = models.IntegerField("Рейтинг", blank=True, default=0)

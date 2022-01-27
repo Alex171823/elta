@@ -46,11 +46,12 @@
       <div class="col-md-9">
 
         {% if request.user.id == current_user %}
-            <h3>Вы можете <a href="{% url 'upload_picture' %}">загрузить </a> свое изображение</h3>
+            <h3>Вы можете <a href="{% url 'upload_picture' %}">загрузить </a> свое изображение или удалить его, просто
+                кликнув по нему)</h3>
         {% endif %}
         <ul>
           {% for pic in images %}
-            <li><a href="{{ pic.picture.url }}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
+            <li><a <a onclick="return confirm('Вы действительно хотите удалить это фото?')" href="{% url 'delete_picture' pic.pk %}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
           {% empty %}
             <h4> Нет изображений </h4>
           {% endfor %}

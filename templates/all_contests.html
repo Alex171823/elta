@@ -3,10 +3,11 @@
 {% block content %}
   <br>
   <a>
-    {% for contest in object_list %}
-        <li> <a href="{% url 'contest_detail' contest.id %}"> {{ contest.name }} </a> </li>
-    {% empty %}
-        <h3>Пока нет конкурсов</h3>
-    {% endfor %}
+    <ul>
+        {% for contest in object_list %}
+            <li> <a href="{% url 'contest_detail' contest.id %}"> {{ contest.name }} </a> </li>
+        {% empty %}
+            <h3>Пока нет конкурсов</h3>
+        {% endfor %}
 	</ul>
 {% endblock %}
