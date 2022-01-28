@@ -215,25 +215,28 @@ def contest_detail(request, pk):
 def vote_in_contest(request, contest_id, pic_id):
     if request.method == "GET":
         if request.user.is_authenticated:
+            contest = Contest.objects.get(id=contest_id)
+
             # SHOULD BE DONE THROUGH TRANSACTIONS (probably)
             # check for database instance
             votes_q, created = Votes.objects.get_or_create(user=request.user,
                                                            contest_id=contest_id,
                                                            defaults={'votes_left': 3})
-
             pics_q, created = PictureContestRating.objects.get_or_create(picture_id=pic_id,
                                                                          contest_id=contest_id,
                                                                          defaults={'rating': 0})
-
-            if votes_q.votes_left > 0:
-                # remove 1 vote
-                votes_q.votes_left -= 1
-                votes_q.save()
-                # add +1 to pic rating
-                pics_q.rating += 1
-                pics_q.save()
+            if contest.active:
+                if votes_q.votes_left > 0:
+                    # remove 1 vote
+                    votes_q.votes_left -= 1
+                    votes_q.save()
+                    # add +1 to pic rating
+                    pics_q.rating += 1
+                    pics_q.save()
+                else:
+                    return HttpResponse('Нам жаль, но вы уже использовали все свои 3 голоса.')
             else:
-                return HttpResponse('Нам жаль, но вы уже использовали все свои 3 голоса.')
+                return HttpResponse('Конкурс в неактивен. Вы не можете голосовать.')
             return redirect('contest_detail', contest_id)
         else:
             return redirect('login')
@@ -242,16 +245,18 @@ def vote_in_contest(request, contest_id, pic_id):
 def send_picture_to_contest(request, contest_id, pic_id):
     if request.method == "GET":
         if request.user.is_authenticated:
+            contest = Contest.objects.get(id=contest_id)
 
-            # SOME SHIT IN QUERY-SETS, SURE IT CAN BE MUCH MORE BEAUTIFUL
-            q = Contest.objects.filter(id=contest_id, pictures__id=pic_id)
+            if contest.active:
+                # SOME SHIT IN QUERY-SETS, SURE IT CAN BE MUCH MORE BEAUTIFUL
+                q = Contest.objects.filter(id=contest_id, pictures__id=pic_id)
 
-            if len(q) == 0:    # if photo not in contest
-                # add it to contest
-                c = Contest.objects.get(id=contest_id)
-                p = UserImages.objects.get(id=pic_id)
-                c.pictures.add(p)
+                if len(q) == 0:    # if photo not in contest
+                    # add it to contest
+                    p = UserImages.objects.get(id=pic_id)
+                    contest.pictures.add(p)
+                else:
+                    return HttpResponse('Вы уже выслали это фото на конкурс')
             else:
-                return HttpResponse('Вы уже выслали это фото на конкурс')
-
+                return HttpResponse('Конкурс неактивен. Вы не можете отправлять фото на неактивные конкурсы.')
             return redirect('contest_detail', contest_id)
