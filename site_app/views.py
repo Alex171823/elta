@@ -33,7 +33,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['images'] = UserImages.objects.filter(user_id=self.kwargs.get('pk')).order_by('-date_time_uploaded')
+        context['images'] = UserImages.objects.filter(user_id=self.kwargs.get('pk')).order_by('-date_uploaded')
         context['rating'] = UserExtraData.objects.get(user_id=self.kwargs.get('pk'))
         context['current_user'] = self.kwargs.get('pk')
         return context
@@ -204,7 +204,7 @@ def contest_detail(request, pk):
         contest_pictures = zip(images_for_contest_urls, images_pk)
 
         if request.user.is_authenticated:
-            pictures = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_time_uploaded')
+            pictures = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_uploaded')
             return render(request, 'contest_detail.html', {'object': contest, 'pictures': pictures,
                                                            'contest_pictures': contest_pictures})
         else:

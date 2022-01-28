@@ -16,13 +16,14 @@ class UserExtraData(models.Model):
         return f"{self.user} {self.phone_number} {self.date_birth} {self.rating}"
 
 
+# OVERWRITE DELETE METHOD
 class UserImages(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='pictures')
-    date_time_uploaded = models.DateField(auto_now=True)
+    date_uploaded = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user} {self.picture} {self.date_time_uploaded}"
+        return f"{self.user} {self.picture} {self.date_uploaded}"
 
 
 class Contest(models.Model):
@@ -43,8 +44,14 @@ class Votes(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
     votes_left = models.IntegerField(default=3)
 
+    def __str__(self):
+        return f"{self.user} {self.contest} {self.votes_left}"
+
 
 class PictureContestRating(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
-    picture = models.OneToOneField(UserImages, on_delete=models.PROTECT)
+    picture = models.OneToOneField(UserImages, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.contest} {self.picture} {self.rating}"
