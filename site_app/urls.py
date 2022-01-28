@@ -16,6 +16,8 @@ urlpatterns = [
     path('upload_picture/', views.user_upload_picture, name='upload_picture'),
 
     path('contests/', views.AllContestView.as_view(), name='all_contests'),
-    path('contests/<int:pk>', views.ContestDetailView.as_view(), name='contest_detail'),
+    path('contest/<int:pk>', views.contest_detail, name='contest_detail'),
+    path('vote_in_contest/<int:contest_id>/<int:pic_id>', views.vote_in_contest, name='vote_in_contest'),
+    path('send_to_contest/<int:contest_id>/<int:pic_id>', views.send_picture_to_contest, name='send_to_contest'),
 
 ]

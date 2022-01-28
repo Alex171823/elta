@@ -51,7 +51,7 @@
         {% endif %}
         <ul>
           {% for pic in images %}
-            <li><a <a onclick="return confirm('Вы действительно хотите удалить это фото?')" href="{% url 'delete_picture' pic.pk %}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
+            <li><a onclick="return confirm('Вы действительно хотите удалить это фото?')" href="{% url 'delete_picture' pic.pk %}"><img src="{{ pic.picture.url }}" alt=""/></a></li>
           {% empty %}
             <h4> Нет изображений </h4>
           {% endfor %}

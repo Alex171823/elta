@@ -9,7 +9,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 
 from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraDataForm, UserRegistrationForm, \
     UserUploadImageForm
-from .models import Contest, UserExtraData, UserImages
+from .models import Contest, UserExtraData, UserImages, Votes, PictureContestRating
 
 """
 Start page
@@ -170,11 +170,6 @@ class AllContestView(ListView):
     template_name = 'all_contests.html'
 
 
-class ContestDetailView(DetailView):
-    model = Contest
-    template_name = 'contest_detail.html'
-
-
 def user_delete_photo(request, pk):
     if request.user.is_authenticated:
         if request.method == 'GET':    # CHANGE TO POST
@@ -193,3 +188,70 @@ def user_delete_photo(request, pk):
                                     'В любом случае, свяжитесь с администратором.')
     else:
         return redirect('login')
+
+
+def contest_detail(request, pk):
+    if request.method == 'GET':
+        contest = get_object_or_404(Contest, pk=pk)
+
+        # getting urls for all images in this contest and their pk
+        images_for_contest_urls = []
+        images_pk = []
+        q = contest.pictures.all()
+        for user_image in q:
+            images_for_contest_urls.append(user_image.picture.url)
+            images_pk.append(user_image.pk)
+        contest_pictures = zip(images_for_contest_urls, images_pk)
+
+        if request.user.is_authenticated:
+            pictures = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_time_uploaded')
+            return render(request, 'contest_detail.html', {'object': contest, 'pictures': pictures,
+                                                           'contest_pictures': contest_pictures})
+        else:
+            return render(request, 'contest_detail.html', {'object': contest,
+                                                           'contest_pictures': contest_pictures})
+
+
+def vote_in_contest(request, contest_id, pic_id):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            # SHOULD BE DONE THROUGH TRANSACTIONS (probably)
+            # check for database instance
+            votes_q, created = Votes.objects.get_or_create(user=request.user,
+                                                           contest_id=contest_id,
+                                                           defaults={'votes_left': 3})
+
+            pics_q, created = PictureContestRating.objects.get_or_create(picture_id=pic_id,
+                                                                         contest_id=contest_id,
+                                                                         defaults={'rating': 0})
+
+            if votes_q.votes_left > 0:
+                # remove 1 vote
+                votes_q.votes_left -= 1
+                votes_q.save()
+                # add +1 to pic rating
+                pics_q.rating += 1
+                pics_q.save()
+            else:
+                return HttpResponse('Нам жаль, но вы уже использовали все свои 3 голоса.')
+            return redirect('contest_detail', contest_id)
+        else:
+            return redirect('login')
+
+
+def send_picture_to_contest(request, contest_id, pic_id):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+
+            # SOME SHIT IN QUERY-SETS, SURE IT CAN BE MUCH MORE BEAUTIFUL
+            q = Contest.objects.filter(id=contest_id, pictures__id=pic_id)
+
+            if len(q) == 0:    # if photo not in contest
+                # add it to contest
+                c = Contest.objects.get(id=contest_id)
+                p = UserImages.objects.get(id=pic_id)
+                c.pictures.add(p)
+            else:
+                return HttpResponse('Вы уже выслали это фото на конкурс')
+
+            return redirect('contest_detail', contest_id)

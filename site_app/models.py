@@ -27,12 +27,24 @@ class UserImages(models.Model):
 
 class Contest(models.Model):
     name = models.CharField(max_length=50)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, blank=True)
     description = models.CharField(max_length=255)
-    pictures = models.ManyToManyField(UserImages)
+    pictures = models.ManyToManyField(UserImages, blank=True)
     date_started = models.DateField(auto_now=True)
     date_finished = models.DateField()
     active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} {self.users} {self.description} {self.pictures}"
+
+
+class Votes(models.Model):
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
+    votes_left = models.IntegerField(default=3)
+
+
+class PictureContestRating(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.PROTECT)
+    picture = models.OneToOneField(UserImages, on_delete=models.PROTECT)
+    rating = models.IntegerField(default=0)

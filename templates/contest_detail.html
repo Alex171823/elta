@@ -1,6 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<style type="text/css">
+  p {
+      text-align: justify;
+  }
+  ul {
+       -webkit-column-count: 3;
+       -webkit-column-gap: 20px;
+       -moz-column-count: 3;
+       -moz-column-gap: 20px;
+       column-count: 3;
+       column-gap: 20px;
+       text-align:justify;
+  }
+  ul li {
+      width: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+  }
+
+  ul li a img,
+  ul li a {
+      width: inherit;
+  }
+  ul li a span {
+      display: block;
+  }
+</style>
+
+<br>
+<div class="row">
+
+  <div class="col-md-3">
     <h1>{{ object.name }}</h1>
     <br>
     <p>Описание: {{ object.description }}</p>
@@ -12,4 +45,38 @@
     {% if object.active != True %}
         <p>Конкурс неактивен</p>
     {% endif %}
+    <br>
+
+    {% if request.user.is_authenticated %}
+      <p>Вы можете отправить свою фотографию на конкурс, просто кликнув по ней.</p>
+      {% for pic in pictures %}
+        <a
+          onclick="return confirm('Вы действительно хотите отправить это фото на конкурс?')"
+              href="{% url 'send_to_contest' object.pk pic.pk %}">
+          <img src="{{ pic.picture.url }}" alt="" width="100%"/>
+          <p></p>
+        </a>
+      {% empty %}
+        <p> Вы пока не загрузили ни одного фото, нечего отправлять </p>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="col-md-9">
+      <h1>Фотографии, отправленные на конкурс: </h1>
+      <h5>Вы можете проголосовать за понравившееся фото, кликнув по нему. У вас есть всего 3 голоса в каждом конкурсе.</h5>
+      <ul>
+        {% for url, pk in contest_pictures %}
+          <li>
+            <a
+              onclick="return confirm('Вы действительно хотите проголосовать за это фото?')"
+              href="{% url 'vote_in_contest' object.pk pk %}">
+              <img src="{{ url }}" alt="похоже, пользователь удалил это фото"/>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+  </div>
+</div>
+  
 {% endblock %}
