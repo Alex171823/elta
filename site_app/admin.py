@@ -21,7 +21,8 @@ class UserExtraDataModelAdmin(admin.ModelAdmin):
 
 
 class UserImagesModelAdmin(admin.ModelAdmin):
-    fields = ['user', 'picture', 'date_uploaded']
+    fields = ['user', 'picture',]
+    search_fields = ['picture', 'user__username']
     list_display = fields
 
 

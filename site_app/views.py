@@ -11,18 +11,14 @@ from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraD
     UserUploadImageForm
 from .models import Contest, UserExtraData, UserImages, Votes, PictureContestRating
 
-"""
-Start page
-"""
+
+class ListUsers(ListView):
+    model = User
+    template_name = 'all_users.html'
 
 
 class StartPageView(TemplateView):
     template_name = "front_page.html"
-
-
-"""
-Profiles
-"""
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
