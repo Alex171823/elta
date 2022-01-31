@@ -26,7 +26,7 @@ class UserImagesModelAdmin(admin.ModelAdmin):
 
 
 class ContestModelAdmin(admin.ModelAdmin):
-    fields = ['name', 'description', 'date_started', 'date_finished', 'active']
+    fields = ['name', 'description', 'active']
     list_display = fields
 
 
@@ -37,7 +37,7 @@ class PictureContestRatingModelAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserModelAdmin)
-admin.site.register(Contest, ContestModelAdmin)
+admin.site.register(Contest)
 admin.site.register(UserExtraData, UserExtraDataModelAdmin)
 admin.site.register(UserImages, UserImagesModelAdmin)
 admin.site.register(Votes)

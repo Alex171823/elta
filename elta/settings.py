@@ -10,7 +10,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-qc7%47rh_2xd-*#0geyb0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ("DJANGO_DEBUG", "") != "False"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['iverty.pythonanywhere.com']
 
 
 # Application definition
@@ -108,13 +108,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static_files")
+STATIC_ROOT = os.path.join('/home/iverty/elta/static')
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+# STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, "static"),
+# )
 
 # Base url to serve media files
 MEDIA_URL = '/media/'
