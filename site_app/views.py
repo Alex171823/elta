@@ -293,7 +293,7 @@ def vote_for_picture(request, pic_id):
         if request.user.is_authenticated:
             # gets owner of particular image and increases his/her rating
             # mb should be rewritten
-            user = UserExtraData.objects.get(id=User.objects.get(userimages__id=pic_id).pk)
+            user = UserExtraData.objects.get(user_id=User.objects.get(userimages__id=pic_id).pk)
             user.rating += 1
             user.save()
             return redirect('startpage')
