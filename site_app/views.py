@@ -288,12 +288,12 @@ def vote_in_contest(request, contest_id, pic_id):
             return redirect('login')
 
 
-def vote_for_picture(request, pk):
+def vote_for_picture(request, pic_id):
     if request.method == 'GET':
         if request.user.is_authenticated:
             # gets owner of particular image and increases his/her rating
             # mb should be rewritten
-            user = UserExtraData.objects.get(id=User.objects.get(userimages__id=pk).pk)
+            user = UserExtraData.objects.get(id=User.objects.get(userimages__id=pic_id).pk)
             user.rating += 1
             user.save()
             return redirect('startpage')

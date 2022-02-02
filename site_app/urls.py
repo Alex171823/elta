@@ -21,5 +21,5 @@ urlpatterns = [
     path('contest/<int:pk>', views.contest_detail, name='contest_detail'),
     path('vote_in_contest/<int:contest_id>/<int:pic_id>', views.vote_in_contest, name='vote_in_contest'),
     path('send_to_contest/<int:contest_id>/<int:pic_id>', views.send_picture_to_contest, name='send_to_contest'),
-    path('vote_for_users_pic/<int:pk>', views.vote_for_picture, name='vote_for_pic')
+    path('vote_for_users_pic/<int:pic_id>', views.vote_for_picture, name='vote_for_pic')
 ]

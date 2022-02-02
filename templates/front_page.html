@@ -299,11 +299,11 @@
 </h2>
 
   <ul>
-    {% for pic in all_pics %}
+    {% for picture in all_pics %}
       <li>
         <a
-          href="{% url 'vote_for_pic' pic.pk %}">
-          <img src="{{ pic.picture.url }}" alt=""/>
+          href="{% url 'vote_for_pic' picture.pk %}">
+          <img src="{{ picture.picture.url }}" alt=""/>
         </a>
       </li>
     {% empty %}
