@@ -65,7 +65,7 @@
     margin: -.5em -.5em 0;
     padding: .5em;
   }
-
+  {# user pics #}
   details[open] {
     padding: .5em;
   }
@@ -73,6 +73,34 @@
   details[open] summary {
     border-bottom: 1px solid #aaa;
     margin-bottom: .5em;
+  }
+
+    ul {
+       -webkit-column-count: 3;
+       -webkit-column-gap: 20px;
+       -moz-column-count: 3;
+       -moz-column-gap: 20px;
+       column-count: 3;
+       column-gap: 20px;
+       text-align:justify;
+  }
+  ul li {
+      width: 100%;
+      margin-bottom: 20px;
+      overflow: hidden;
+  }
+
+  ul li a img,
+  ul li a {
+      width: inherit;
+  }
+  ul li a span {
+      display: block;
+  }
+
+  /*header user pictures*/
+  h2 {
+    text-align: center;
   }
 </style>
 
@@ -90,10 +118,12 @@
       <p>Дуэйн-Скала-Джонсон</p>
       <img id='team-photo' src="{% static 'images/team/dua_lipa.jpg' %}">
       <p>Дуа Липа</p>
+      
 
-      <a href="{% url 'all_contests' %}"> Смотреть конкурсы </a>
+
+      <a href="{% url 'all_contests' %}" class="btn btn-primary">Все конкурсы</a>
       <p></p>
-      <a href="{% url 'all_users' %}"> Все пользователи </a>
+      <a href="{% url 'all_users' %}" class="btn btn-primary">Все пользователи</a>
 
       <p></p>
 
@@ -105,7 +135,56 @@
   <div class="col-md-10">
 
     <!-- ABOUT CLUB -->
-    <details>
+    <p>
+      <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Вас приветствует клуб "ДЕЛЬТА"!
+      </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        <p>Вас приветствует клуб подводной фотографии и дайвинга "ДЕЛЬТА" Харьковского областного Дворца детского и
+        юношеского творчества.</p>
+
+        <p>Мы приглашаем плавать с рождения в мир радости и гармонии общения с водой, сохраняя и
+        поддерживая подаренные маленькому человечку природные возможности быть с водой на "ты"! Всех детей с
+        пятилетнего возраста ждем в группы начальной подготовки. С 8-14 лет обучаем подводному плаванию по
+        международной системе CMAS и подводному фотографированию. Творческие идеи и фантазии реализуются в
+        художественных подводных композициях в бассейне. Вода великолепный помощник в этом!</p>
+
+        <p>За стенами бассейна - буйство красок; вспыхивают мощные красные, синие, зеленые огни - происходит великое
+        таинство, рождаются подводные кадры... Так проходит тренировка клуба подводных фотографов "Дельта". Полсотни
+        мальчишек и девчонок фантазируют-вспыхивают блицы фотовспышек, срабатывают вспомогательные источники света,
+        иногда возникают довольно оживленные дискуссии между моделями, фотографом и его ассистентами. Над одним
+        кадром можно биться несколько недель и даже месяцев. Наиболее сложные художественные задачи решают ребята
+        которые занимаются в клубе 4-5 лет, а младшие, глядя на творческие муки старших, многому учатся. Так от
+        тренировки к тренировке набираются "кирпичики"-набор технических и творческих приемов, которые приходят к
+        самостоятельному фотографу только в результате многолетней практики. Это самая настоящая школа, но без двоек
+        и нравоучений. Хочешь быть подводным фотографом - будь им! С работами наших воспитанников познакомит Вас
+        портфолио клуба.</p>
+
+        <p>Основой практических занятий является обучение плаванию, подводному плаванию в маске, трубке и ластах,
+        дайвингу и подводному фотографированию. На теории изучаем основы фотографии и композиции, знакомимся с
+        подводным миром и его удивительными жителями.</p>
+
+        <p>В нашей программе также знакомство с творчеством выдающихся писателей, музыкантов и художников, черпающих
+        свое вдохновение у моря; с известными путешественниками и исследователями, подводными операторами и
+        фотографами, чьи открытия и опыт вызывают восхищение и благодарность и рождают в детских сердцах красивые
+        мечты. А мечты, как известно, сбываются! Потому что, испокон веку подводный мир манил к себе людей как
+        величайшая загадка. В волнующей подводной стране можно созерцать чудесные сокровища и встретить
+        фантастические существа. Когда созерцаешь бескрайнюю морскую гладь и можешь быть с водой на "ты", и увидеть
+        великолепие подводных пейзажей и совершенно счастливым возвращаться на берег и к солнцу, и к звездному небу,
+        самым естественным образом в душе рождается чувство "Я МОГУ ВСЕ". Многочисленные клубные экспедиции
+        открывают нам тайны подводного царства.</p>
+
+        <p>За тридцать лет, что существует клуб "Дельта", многие из его воспитанников стали победителями и призерами
+        разнообразнейших фестивалей подводной фотографии. Франция (Антиб), Австралия, Чехия (Тахов),
+        Турция (Стамбул, Мармарес), Россия (Саранск, С. Петербург, Москва), Украина (Донецк, Киев, Ялта) - названия
+        этих городов многое скажут любюителю подводной фотографии. Клуб является 7-ми!!! кратным обладателем
+        главного приза "Золотой аквалангист" - самого именитого Всемирного фестиваля подводных изображений,
+        традиционно проходящего в городе Антиб (Франция).</p>
+      </div>
+    </div>
+    <!-- <details>
       <summary>Вас приветствует клуб "ДЕЛЬТА"!</summary>
       <div class="about-club">
         <p>Вас приветствует клуб подводной фотографии и дайвинга "ДЕЛЬТА" Харьковского областного Дворца детского и
@@ -149,9 +228,8 @@
         главного приза "Золотой аквалангист" - самого именитого Всемирного фестиваля подводных изображений,
         традиционно проходящего в городе Антиб (Франция).</p>
       </div>
-    </details>
+    </details> -->
 
-    <br>
     <br>
 
     <!-- GALERY - MOST POPULAR/PORTFOLIO -->
@@ -196,110 +274,54 @@
     <div class="responsive">
       <div class="gallery">
         <a target="_blank" href="{% static 'images/portfolio/18.jpg' %}">
-          <img src="{% static 'images/portfolio/18.jpg' %}" alt="Cinque Terre" width="600" height="400">
+          <img src="{% static 'images/portfolio/18.jpg' %}" alt="Админ положил прод" width="600" height="400">
         </a>
         <div class="desc">Фамилия Имя, хх лет</div>
       </div>
       <br>
     </div>
     <div class="clearfix"></div>
-  </div>
-  <!-- WORSE PRACTICE -->
-<!--     <div class="galery">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/11.jpg' %}">
-              <img src="{% static 'images/portfolio/11.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/12.jpg' %}">
-              <img src="{% static 'images/portfolio/12.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/13.jpg' %}">
-              <img src="{% static 'images/portfolio/13.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/14.jpg' %}">
-              <img src="{% static 'images/portfolio/14.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/15.jpg' %}">
-              <img src="{% static 'images/portfolio/15.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/16.jpg' %}">
-              <img src="{% static 'images/portfolio/16.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/17.jpg' %}">
-              <img src="{% static 'images/portfolio/17.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/18.jpg' %}">
-              <img src="{% static 'images/portfolio/18.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="thumbnail">
-            <a href="{% static 'images/portfolio/19.jpg' %}">
-              <img src="{% static 'images/portfolio/19.jpg' %}" style="width:100%">
-              <div class="caption">
-                <p>Фамилия Имя, хх лет</p>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
-</div>
+  </div>
+
+<!-- <figure class="text-end">
+  <blockquote class="blockquote">
+    <p>Фотографии пользоваетелей</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Голосовать по клику)
+  </figcaption>
+</figure> -->
+<h2>
+  Фотографии пользователей
+  <small class="text h4"><br>  Голосовать по клику)</small>
+  <small class="text-muted h6"><br>  (это повышает рейтинг автора)</small>
+</h2>
+
+  <ul>
+    {% for pic in all_pics %}
+      <li>
+        <a
+          href="{% url 'vote_for_pic' pic.pk %}">
+          <img src="{{ pic.picture.url }}" alt=""/>
+        </a>
+      </li>
+    {% empty %}
+      <h4> Нет изображений </h4>
+    {% endfor %}
+  </ul>
+
+<!--   WORSE PRACTICE
+  {% for pic in all_pics %}
+      <div class="responsive">
+        <div class="gallery">
+          <a target="_blank" href="{{ pic.picture.url }}">
+            <img src="{{ pic.picture.url }}" alt="Админ роняет прод..." width="600" height="400">
+          </a>
+          <div class="desc">Фамилия Имя, хх лет</div>
+        </div>
+        <br>
+      </div>
+  {% endfor %} -->
 
 {% endblock %}

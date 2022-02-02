@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <br>
-  <a>
-    <ul>
-        {% for contest in object_list %}
-            <li> <a href="{% url 'contest_detail' contest.id %}"> {{ contest.name }} </a> </li>
-        {% empty %}
-            <h3>Пока нет конкурсов</h3>
-        {% endfor %}
-	</ul>
+
+<div class="list-group">
+  {% for contest in object_list %}
+    <a href="{% url 'contest_detail' contest.id %}" class="list-group-item list-group-item-action"> {{ contest.name }} </a>
+  {% empty %}
+    <h3>Пока нет конкурсов</h3>
+  {% endfor %}
+
 {% endblock %}

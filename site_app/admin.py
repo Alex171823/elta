@@ -1,18 +1,10 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
 
-from .models import Contest, UserExtraData, UserImages, Votes, PictureContestRating
+from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
 
 
 class UserExtraDataInLine(admin.TabularInline):
     model = UserExtraData
-
-
-class UserModelAdmin(admin.ModelAdmin):
-    inlines = [UserExtraDataInLine]
-    fields = ['username', 'first_name', 'last_name', 'is_staff', 'is_active', 'last_login', 'date_joined']
-    list_display = fields
-    search_fields = fields
 
 
 class UserExtraDataModelAdmin(admin.ModelAdmin):
@@ -21,7 +13,7 @@ class UserExtraDataModelAdmin(admin.ModelAdmin):
 
 
 class UserImagesModelAdmin(admin.ModelAdmin):
-    fields = ['user', 'picture',]
+    fields = ['user', 'picture']
     search_fields = ['picture', 'user__username']
     list_display = fields
 
@@ -36,8 +28,6 @@ class PictureContestRatingModelAdmin(admin.ModelAdmin):
     list_display = fields
 
 
-admin.site.unregister(User)
-admin.site.register(User, UserModelAdmin)
 admin.site.register(Contest)
 admin.site.register(UserExtraData, UserExtraDataModelAdmin)
 admin.site.register(UserImages, UserImagesModelAdmin)

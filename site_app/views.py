@@ -1,25 +1,27 @@
-import os
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect,  render
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView, TemplateView
 
 from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraDataForm, UserRegistrationForm, \
     UserUploadImageForm
-from .models import Contest, UserExtraData, UserImages, Votes, PictureContestRating
+from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
 
-
-class ListUsers(ListView):
-    model = User
-    template_name = 'all_users.html'
+""" STARTPAGE """
 
 
 class StartPageView(TemplateView):
     template_name = "front_page.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_pics'] = UserImages.objects.all()[:40]
+        return context
+
+
+""" USERS """
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
@@ -32,13 +34,17 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
         context['images'] = UserImages.objects.filter(user_id=self.kwargs.get('pk')).order_by('-date_uploaded')
         context['rating'] = UserExtraData.objects.get(user_id=self.kwargs.get('pk'))
+        # to check if user on his/her profile
         context['current_user'] = self.kwargs.get('pk')
         return context
 
 
-"""
-authorization, authentification and so on
-"""
+class ListUsers(ListView):
+    model = User
+    template_name = 'all_users.html'
+
+
+""" AUTH """
 
 
 def user_register(request):
@@ -86,6 +92,9 @@ def user_logout(request):
     return render(request, 'logout.html')
 
 
+""" USER EDIT DATA """
+
+
 # using 2 modelforms for User and UserExtraData models
 def edit_profile(request):
     if request.user.is_authenticated:
@@ -105,7 +114,8 @@ def edit_profile(request):
                 user_form.save()
                 extra_data_form.save()
                 return redirect('userprofile', request.user.pk)
-        else:
+        # changed
+        if request.method == 'GET':
             return render(request, 'change_userinfo.html', {'user_form': user_form,
                                                             'extra_data_form': extra_data_form})
     else:
@@ -132,6 +142,23 @@ def user_change_password(request):
         return redirect('login')
 
 
+""" MANAGING PICTURES """
+
+
+class PictureView(TemplateView):
+    template_name = 'picture_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        picture = UserImages.objects.get(id=self.kwargs.get('pk'))
+        context['picture'] = picture
+        # to check if user is watching his/her picture
+        context['picture_owner'] = picture.user
+        # check if user has permission to delete pics from UserImages model
+        context['can_delete_pictures'] = self.request.user.has_perm('site_app.delete_userimages')
+        return context
+
+
 def user_upload_picture(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -148,7 +175,7 @@ def user_upload_picture(request):
                 for f in files:
                     # so user won't be able to upload more than 500(100 for now) mb of files
                     # should be done customizable later
-                    if all_images_size + f.size <= 104857600:    # 100mb
+                    if all_images_size + f.size <= 104857600:  # 100mb
                         instance = UserImages(user=request.user, picture=f)
                         instance.save()
                     else:
@@ -162,29 +189,48 @@ def user_upload_picture(request):
         return redirect('login')
 
 
-class AllContestView(ListView):
-    model = Contest
-    template_name = 'all_contests.html'
-
-
 def user_delete_photo(request, pk):
     if request.user.is_authenticated:
-        if request.method == 'GET':    # CHANGE TO POST
+        if request.method == 'GET':  # CHANGE TO POST
             user = request.user
-            try:
-                picture = UserImages.objects.get(user=user, id=pk)
-                if picture:
-                    os.remove(picture.picture.path)
-                    picture.delete()
-                    return redirect('userprofile', request.user.pk)
-                else:
-                    return HttpResponse('Картинка не найдена. Свяжитесь с администратором.')
-            except UserImages.DoesNotExist:
-                return HttpResponse('Похоже, вы пытаетесь удалить чужое фото(фу так делать).'
+            pic = UserImages.objects.get(id=pk)
+            if pic.user == user or request.user.has_perm('site_app.delete_userimages'):
+                pic.delete()
+                return redirect('userprofile', request.user.pk)
+            else:
+                return HttpResponse('Похоже, вы пытаетесь удалить чужое фото(фу так делать) или этого фото нет в базе.'
                                     ' Не надо ходить по url-ам, админ специально кнопочки вам прикрутил. '
                                     'В любом случае, свяжитесь с администратором.')
     else:
         return redirect('login')
+
+
+def send_picture_to_contest(request, contest_id, pic_id):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            contest = Contest.objects.get(id=contest_id)
+
+            if contest.active:
+                # SOME SHIT IN QUERY-SETS, SURE IT CAN BE MUCH MORE BEAUTIFUL
+                q = Contest.objects.filter(id=contest_id, pictures__id=pic_id)
+
+                if len(q) == 0:  # if photo not in contest
+                    # add it to contest
+                    p = UserImages.objects.get(id=pic_id)
+                    contest.pictures.add(p)
+                else:
+                    return HttpResponse('Вы уже выслали это фото на конкурс')
+            else:
+                return HttpResponse('Конкурс неактивен. Вы не можете отправлять фото на неактивные конкурсы.')
+            return redirect('contest_detail', contest_id)
+
+
+""" CONTESTS """
+
+
+class AllContestView(ListView):
+    model = Contest
+    template_name = 'all_contests.html'
 
 
 def contest_detail(request, pk):
@@ -207,6 +253,9 @@ def contest_detail(request, pk):
         else:
             return render(request, 'contest_detail.html', {'object': contest,
                                                            'contest_pictures': contest_pictures})
+
+
+""" VOTE SYSTEM """
 
 
 def vote_in_contest(request, contest_id, pic_id):
@@ -239,21 +288,14 @@ def vote_in_contest(request, contest_id, pic_id):
             return redirect('login')
 
 
-def send_picture_to_contest(request, contest_id, pic_id):
-    if request.method == "GET":
+def vote_for_picture(request, pk):
+    if request.method == 'GET':
         if request.user.is_authenticated:
-            contest = Contest.objects.get(id=contest_id)
-
-            if contest.active:
-                # SOME SHIT IN QUERY-SETS, SURE IT CAN BE MUCH MORE BEAUTIFUL
-                q = Contest.objects.filter(id=contest_id, pictures__id=pic_id)
-
-                if len(q) == 0:    # if photo not in contest
-                    # add it to contest
-                    p = UserImages.objects.get(id=pic_id)
-                    contest.pictures.add(p)
-                else:
-                    return HttpResponse('Вы уже выслали это фото на конкурс')
-            else:
-                return HttpResponse('Конкурс неактивен. Вы не можете отправлять фото на неактивные конкурсы.')
-            return redirect('contest_detail', contest_id)
+            # gets owner of particular image and increases his/her rating
+            # mb should be rewritten
+            user = UserExtraData.objects.get(id=User.objects.get(userimages__id=pk).pk)
+            user.rating += 1
+            user.save()
+            return redirect('startpage')
+        else:
+            return redirect('login')
