@@ -244,12 +244,16 @@ def contest_detail(request, pk):
         for user_image in q:
             images_for_contest_urls.append(user_image.picture.url)
             images_pk.append(user_image.pk)
+        # zip to iterate in template
         contest_pictures = zip(images_for_contest_urls, images_pk)
 
         if request.user.is_authenticated:
-            pictures = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_uploaded')
-            return render(request, 'contest_detail.html', {'object': contest, 'pictures': pictures,
-                                                           'contest_pictures': contest_pictures})
+            user_pics = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_uploaded')
+            votes_left = Votes.objects.get(user__id=request.user.pk, contest=contest).votes_left
+            return render(request, 'contest_detail.html', {'object': contest,
+                                                           'pictures': user_pics,
+                                                           'contest_pictures': contest_pictures,
+                                                           'votes_left': votes_left})
         else:
             return render(request, 'contest_detail.html', {'object': contest,
                                                            'contest_pictures': contest_pictures})
