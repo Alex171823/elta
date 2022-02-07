@@ -9,7 +9,8 @@ from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraD
     UserUploadImageForm
 from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
 
-""" STARTPAGE """
+
+""" STATIC PAGES """
 
 
 class StartPageView(TemplateView):
@@ -19,6 +20,10 @@ class StartPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['all_pics'] = UserImages.objects.all()[:40]
         return context
+
+
+class AboutTeamMemberView(TemplateView):
+    template_name = 'about_team.html'
 
 
 """ USERS """
