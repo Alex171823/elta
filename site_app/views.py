@@ -9,7 +9,6 @@ from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraD
     UserUploadImageForm
 from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
 
-
 """ STATIC PAGES """
 
 
@@ -254,11 +253,16 @@ def contest_detail(request, pk):
 
         if request.user.is_authenticated:
             user_pics = UserImages.objects.filter(user_id=request.user.pk).order_by('-date_uploaded')
-            votes_left = Votes.objects.get(user__id=request.user.pk, contest=contest).votes_left
+
+            user_votes, created = Votes.objects.get_or_create(user__id=request.user.pk,
+                                                              contest=contest,
+                                                              defaults={'user': request.user,
+                                                                        'contest': contest})
+
             return render(request, 'contest_detail.html', {'object': contest,
                                                            'pictures': user_pics,
                                                            'contest_pictures': contest_pictures,
-                                                           'votes_left': votes_left})
+                                                           'votes_left': user_votes.votes_left})
         else:
             return render(request, 'contest_detail.html', {'object': contest,
                                                            'contest_pictures': contest_pictures})
