@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
+from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes, QuizStatement
 
 
 class UserExtraDataInLine(admin.TabularInline):
@@ -33,3 +33,4 @@ admin.site.register(UserExtraData, UserExtraDataModelAdmin)
 admin.site.register(UserImages, UserImagesModelAdmin)
 admin.site.register(Votes)
 admin.site.register(PictureContestRating, PictureContestRatingModelAdmin)
+admin.site.register(QuizStatement)

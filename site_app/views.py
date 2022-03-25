@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -7,18 +9,28 @@ from django.views.generic import DetailView, ListView, TemplateView
 
 from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraDataForm, UserRegistrationForm, \
     UserUploadImageForm
-from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
+from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes, QuizStatement
 
 """ STATIC PAGES """
 
 
 class StartPageView(TemplateView):
-    template_name = "front_page.html"
+    template_name = 'quiz.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_pics'] = UserImages.objects.all()[:40]
+        all_statements = list(QuizStatement.objects.all())
+        context['statement'] = random.choice(all_statements)
+        context['rendering_argument'] = random.randint(0, 1)
         return context
+
+    # OLD VERSION
+    # template_name = "front_page.html"
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['all_pics'] = UserImages.objects.all()[:40]
+    #     return context
 
 
 class AboutTeamMemberView(TemplateView):
