@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block head-additional %}
+
+  {% block title %}
+  <title>
+    Викторина
+  </title>
+  {% endblock %}
+
+  <style>
+    html {
+      height: 100%;
+    }
+    body {
+      height: 100%;
+      margin: 0 auto;
+      padding: 1% 20% 1% 20%;
+      color: white;
+      background-color: black;
+      text-align: center;
+      font-family: 'Ubuntu', sans-serif;
+    }
+    button {
+      font-family: 'Ubuntu', sans-serif;
+      margin: 5%;
+    }
+    a {
+        text-align: center;
+        text-decoration: none;
+        font-family: 'Ubuntu', sans-serif;;
+        font-size: 36px;
+        border-bottom: 1px solid gray;
+        padding-left: 250px;
+        padding-right: 250px;
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
+        padding-bottom: 3px;
+        border-radius: 3px;
+    }
+  </style>
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+        {% if object_list %}
+          {% for quiz in object_list %}
+            <a href="{% url 'quiz' quiz.id %}" class="link-danger">{{ quiz.id }}</a>
+            <p></p>
+          {% endfor %}
+        {% else %}
+            <h4>Пока нет вопросов</h4>
+        {% endif %}
+
+{% endblock %}

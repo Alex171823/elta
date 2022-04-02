@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.StartPageView.as_view(), name='startpage'),
+    path('frontpage', views.FrontPageView.as_view(), name='frontpage'),
+
     path('about_team', views.AboutTeamMemberView.as_view(), name='about_team'),
 
     path('userprofile/<int:pk>', views.UserProfileView.as_view(), name='userprofile'),
@@ -22,5 +24,5 @@ urlpatterns = [
     path('contest/<int:pk>', views.contest_detail, name='contest_detail'),
     path('vote_in_contest/<int:contest_id>/<int:pic_id>', views.vote_in_contest, name='vote_in_contest'),
     path('send_to_contest/<int:contest_id>/<int:pic_id>', views.send_picture_to_contest, name='send_to_contest'),
-    path('vote_for_users_pic/<int:pic_id>', views.vote_for_picture, name='vote_for_pic')
+    path('vote_for_users_pic/<int:pic_id>', views.vote_for_picture, name='vote_for_pic'),
 ]

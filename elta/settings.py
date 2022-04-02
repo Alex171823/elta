@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'site_app.apps.SiteAppConfig',
+    'quizzes.apps.QuizzesConfig',
 
     'django_extensions',
 

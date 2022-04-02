@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block head-additional %}
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+
+  {% block title %}
+    <title>Startpage</title>
+  {% endblock %}
+
+  <style>
+    html, body, .container {
+      height: 100%;
+    }
+    body {
+      margin: 0 auto;
+      padding: 1% 20% 1% 20%;
+      color: white;
+      background-color: black;
+      text-align: center;
+      font-family: 'Ubuntu', sans-serif;
+    }
+    button {
+      font-family: 'Ubuntu', sans-serif;
+      margin: 5%;
+    }
+  </style>
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row h-100">
+    <div class="col my-auto">
+      <a href="{% url 'all_quizzes' %}" class="btn btn-outline-warning" style="font-size: 54px; border-radius: 15px;">Решать задачки</a>
+      <p></p>
+      <a href="{% url 'frontpage' %}" class="btn btn-outline-warning" style="font-size: 54px; border-radius: 15px;">На сайт (в разработке)</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

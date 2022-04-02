@@ -1,5 +1,3 @@
-import random
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -9,32 +7,26 @@ from django.views.generic import DetailView, ListView, TemplateView
 
 from .forms import LoginForm, PasswordForm, UserChangeDataForm, UserChangeExtraDataForm, UserRegistrationForm, \
     UserUploadImageForm
-from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes, QuizStatement
+from .models import Contest, PictureContestRating, UserExtraData, UserImages, Votes
 
 """ STATIC PAGES """
 
 
 class StartPageView(TemplateView):
-    template_name = 'quiz.html'
+    template_name = "startpage.html"
+
+
+class FrontPageView(TemplateView):
+    template_name = 'elta/front_page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        all_statements = list(QuizStatement.objects.all())
-        context['statement'] = random.choice(all_statements)
-        context['rendering_argument'] = random.randint(0, 1)
+        context['all_pics'] = UserImages.objects.all()[:40]
         return context
-
-    # OLD VERSION
-    # template_name = "front_page.html"
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['all_pics'] = UserImages.objects.all()[:40]
-    #     return context
 
 
 class AboutTeamMemberView(TemplateView):
-    template_name = 'about_team.html'
+    template_name = 'elta/about_team.html'
 
 
 """ USERS """
@@ -42,7 +34,7 @@ class AboutTeamMemberView(TemplateView):
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name = 'userprofile.html'
+    template_name = 'elta/userprofile.html'
     fields = ['username', 'first_name', 'last_name', 'email', 'rating']
 
     def get_context_data(self, **kwargs):
@@ -57,7 +49,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
 class ListUsers(ListView):
     model = User
-    template_name = 'all_users.html'
+    template_name = 'elta/all_users.html'
 
 
 """ AUTH """
@@ -78,10 +70,10 @@ def user_register(request):
             new_user_extra_data = UserExtraData(user_id=new_user.id, rating=0)
             new_user_extra_data.save()
 
-            return render(request, 'registration_done.html', {'new_user': new_user})
+            return render(request, 'elta/registration_done.html', {'new_user': new_user})
     else:
         user_form = UserRegistrationForm()
-    return render(request, 'registration.html', {'user_form': user_form})
+    return render(request, 'elta/registration.html', {'user_form': user_form})
 
 
 def user_login(request):
@@ -100,12 +92,12 @@ def user_login(request):
                 return HttpResponse("Can't sign you in. Please connect admin of the site.")
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'elta/login.html', {'form': form})
 
 
 def user_logout(request):
     logout(request)
-    return render(request, 'logout.html')
+    return render(request, 'elta/logout.html')
 
 
 """ USER EDIT DATA """
@@ -132,8 +124,8 @@ def edit_profile(request):
                 return redirect('userprofile', request.user.pk)
         # changed
         if request.method == 'GET':
-            return render(request, 'change_userinfo.html', {'user_form': user_form,
-                                                            'extra_data_form': extra_data_form})
+            return render(request, 'elta/change_userinfo.html', {'user_form': user_form,
+                                                                 'extra_data_form': extra_data_form})
     else:
         return redirect('login')
 
@@ -153,7 +145,7 @@ def user_change_password(request):
                 return HttpResponse('form is not valid')
         else:
             form = PasswordForm()
-        return render(request, 'reset_password.html', {'form': form})
+        return render(request, 'elta/reset_password.html', {'form': form})
     else:
         return redirect('login')
 
@@ -162,7 +154,7 @@ def user_change_password(request):
 
 
 class PictureView(TemplateView):
-    template_name = 'picture_detail.html'
+    template_name = 'elta/picture_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -200,7 +192,7 @@ def user_upload_picture(request):
                 return redirect('userprofile', request.user.pk)
         else:
             form = UserUploadImageForm()
-        return render(request, 'upload_picture.html', {'form': form})
+        return render(request, 'elta/upload_picture.html', {'form': form})
     else:
         return redirect('login')
 
@@ -246,7 +238,7 @@ def send_picture_to_contest(request, contest_id, pic_id):
 
 class AllContestView(ListView):
     model = Contest
-    template_name = 'all_contests.html'
+    template_name = 'elta/all_contests.html'
 
 
 def contest_detail(request, pk):
@@ -271,13 +263,13 @@ def contest_detail(request, pk):
                                                               defaults={'user': request.user,
                                                                         'contest': contest})
 
-            return render(request, 'contest_detail.html', {'object': contest,
-                                                           'pictures': user_pics,
-                                                           'contest_pictures': contest_pictures,
-                                                           'votes_left': user_votes.votes_left})
+            return render(request, 'elta/contest_detail.html', {'object': contest,
+                                                                'pictures': user_pics,
+                                                                'contest_pictures': contest_pictures,
+                                                                'votes_left': user_votes.votes_left})
         else:
-            return render(request, 'contest_detail.html', {'object': contest,
-                                                           'contest_pictures': contest_pictures})
+            return render(request, 'elta/contest_detail.html', {'object': contest,
+                                                                'contest_pictures': contest_pictures})
 
 
 """ VOTE SYSTEM """
@@ -321,6 +313,6 @@ def vote_for_picture(request, pic_id):
             user = UserExtraData.objects.get(user_id=User.objects.get(userimages__id=pic_id).pk)
             user.rating += 1
             user.save()
-            return redirect('startpage')
+            return redirect('frontpage')
         else:
             return redirect('login')

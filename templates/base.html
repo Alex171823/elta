@@ -1,72 +1,80 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html>
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>    
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FOR BOOTSTRAP CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
-  <!-- FOR BOOTSTRAP CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    {% block head-additional %}
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+      {% block title%}
+        <title>
+          CLUB DELTA
+        </title>
+      {% endblock %}
 
-  <title>
-    CLUB DELTA
-  </title>
+      <style type="text/css">
+        body {
+          font-family: 'Ubuntu', sans-serif;
+        }
+        .col-md-4 a {
+          text-align: center;      
+        }
+        .col-md-1 {
+          text-align: center;
+        }
+      </style>
+    {%endblock%}
+  </head>
 
-  <style type="text/css">
-    .col-md-4 a {
-      text-align: center;      
-    }
-    .col-md-1 {
-      text-align: center;
-    }
-/*    .contacts {
-      text-align: center;
-    }
-    #contact-link {
-      display: inline !important;
-    }*/
-  </style>
 
-</head>
 <body>
   <div class="container">
 
-    <!-- Navbar -->
-    <div class="row">
-      <div class="navbar">
-        <div class="col-md-1">
-          <a class="btn btn-primary" href="https://www.instagram.com/club.delta.kh/">Instagram</a>
+    {% block navbar %}
+        <!-- Navbar -->
+        <div class="row">
+          <div class="navbar">
+            <div class="col-md-1">
+              <a class="btn btn-primary" href="https://www.instagram.com/club.delta.kh/">Instagram</a>
+            </div>
+            <div class="col-md-1">
+              <a class="btn btn-primary" href="https://www.facebook.com/club.delta.kh/">Facebook</a>
+            </div>
+            <div class="col-md-1">
+              <a class="btn btn-primary" href="">+380957777777</a>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-1">
+              <a class="btn btn-primary" href="{% url 'frontpage' %}">Главная</a>
+            </div>
+            <div class="col-md-1">
+              {% if request.user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'userprofile' request.user.pk %}">Профиль</a>
+              {% else %}
+                <a class="btn btn-primary" href="{% url 'login'%}">Войти</a>
+              {% endif %}
+            </div>
+            <div class="col-md-1">
+              {% if request.user.is_authenticated %}
+                <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
+              {% else %}
+                <a class="btn btn-primary" href="{% url 'register' %}">Регистрация</a>
+              {% endif %}
+            </div>
+          </div>
         </div>
-        <div class="col-md-1">
-          <a class="btn btn-primary" href="https://www.facebook.com/club.delta.kh/">Facebook</a>
-        </div>
-        <div class="col-md-1">
-          <a class="btn btn-primary" href="">+380957777777</a>
-        </div>
-        <div class="col-md-6"></div>
-        <div class="col-md-1">
-          <a class="btn btn-primary" href="{% url 'startpage' %}">Главная</a>
-        </div>
-        <div class="col-md-1">
-          {% if request.user.is_authenticated %}
-            <a class="btn btn-primary" href="{% url 'userprofile' request.user.pk %}">Профиль</a>
-          {% else %}
-            <a class="btn btn-primary" href="{% url 'login'%}">Войти</a>
-          {% endif %}
-        </div>
-        <div class="col-md-1">
-          {% if request.user.is_authenticated %}
-            <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
-          {% else %}
-            <a class="btn btn-primary" href="{% url 'register' %}">Регистрация</a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    <br>
-    <br>
+        <br>
+        <br>
+    {% endblock %}
 
     {%block content%}
     {%endblock%}
