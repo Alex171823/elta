@@ -1,9 +1,9 @@
-Django==4.0.3
-faker==13.3.3
+Django==4.0.4
+faker==13.3.4
 django-crispy-forms==1.14.0
-pillow==9.0.1
+pillow==9.1.0
 django-extensions==3.1.5
-ipython==8.1.1
+ipython==8.2.0
 flake8==4.0.1
 flake8-django==1.1.2
 flake8-builtins==1.5.3
@@ -11,3 +11,4 @@ flake8-import-order==0.18.1
 flake8-print==4.0.0
 psycopg2-binary==2.9.3
 gunicorn==20.1.0
+pytelegrambotapi==4.4.0
