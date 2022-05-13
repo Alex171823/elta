@@ -1,9 +1,11 @@
 # Elta project
 
 ## Set up the environment
+
 Make sure you have python3, pip and all dependencies installed on your machine.
 
 For linux:
+
 ```bash
 # clone the repository
 git clone https://github.com/Alex171823/elta.git
@@ -12,7 +14,6 @@ git clone https://github.com/Alex171823/elta.git
 cd elta
 ```
 
-```python
 # make virtual environment
 python3 -m venv .env
 
