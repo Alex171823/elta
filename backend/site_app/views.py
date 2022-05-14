@@ -17,7 +17,7 @@ class StartPageView(TemplateView):
 
 
 class FrontPageView(TemplateView):
-    template_name = 'elta/front_page.html'
+    template_name = 'backend/front_page.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -26,7 +26,7 @@ class FrontPageView(TemplateView):
 
 
 class AboutTeamMemberView(TemplateView):
-    template_name = 'elta/about_team.html'
+    template_name = 'backend/about_team.html'
 
 
 """ USERS """
@@ -34,7 +34,7 @@ class AboutTeamMemberView(TemplateView):
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name = 'elta/userprofile.html'
+    template_name = 'backend/userprofile.html'
     fields = ['username', 'first_name', 'last_name', 'email', 'rating']
 
     def get_context_data(self, **kwargs):
@@ -49,7 +49,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
 class ListUsers(ListView):
     model = User
-    template_name = 'elta/all_users.html'
+    template_name = 'backend/all_users.html'
 
 
 """ AUTH """
@@ -154,7 +154,7 @@ def user_change_password(request):
 
 
 class PictureView(TemplateView):
-    template_name = 'elta/picture_detail.html'
+    template_name = 'backend/picture_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -238,7 +238,7 @@ def send_picture_to_contest(request, contest_id, pic_id):
 
 class AllContestView(ListView):
     model = Contest
-    template_name = 'elta/all_contests.html'
+    template_name = 'backend/all_contests.html'
 
 
 def contest_detail(request, pk):

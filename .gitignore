@@ -110,24 +110,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
 # Pycharm
 .idea
 
@@ -135,7 +117,4 @@ dmypy.json
 .vscode
 
 # my personal images while testing
-media/pictures/*
-
-# fixtures
-db.json
+backend/media/pictures/*

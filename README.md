@@ -11,7 +11,7 @@ For linux:
 git clone https://github.com/Alex171823/elta.git
 
 #go to project folder
-cd elta
+cd backend
 ```
 
 # make virtual environment
