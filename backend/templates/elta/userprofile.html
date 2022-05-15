@@ -36,8 +36,8 @@
       <p>Username: {{ object.username }}</p>
       <p>Имя: {{ object.first_name }}</p>
       <p>Фамилия: {{ object.last_name }}</p>
-      <p>Имэйл: {{ object.email }}</p>
-      <p>Рэйтинг: {{ rating.rating }}</p>
+      <p>Email: {{ object.email }}</p>
+      <p>Рейтинг: {{ rating.rating }}</p>
       {% if request.user.id == current_user %}
           <p>Вы можете изменить свой <a href="{% url 'change_password' %}">пароль</a> или
              <a href="{% url 'edit_profile' %}">данные</a>.</p>
@@ -47,9 +47,7 @@
     <div class="col-md-9">
 
       {% if request.user.id == current_user %}
-{#        <a href="{% url 'upload_picture' %}"> -  линк для загрузки изображений#}
-        <h4>Вы можете <a href="">загрузить </a> свое изображение или удалить его, кликнув по нему.</h4>
-        <h3 style="color: red">!!!ВРЕМЕННО НЕДОСТУПНО!!!</h3>
+        <h4>Вы можете <a href="{% url 'upload_picture' %}">загрузить </a> свое изображение или удалить его, кликнув по нему.</h4>
       {% endif %}
       <br>
       <ul>

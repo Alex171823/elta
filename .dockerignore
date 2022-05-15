@@ -1,0 +1,4 @@
+/backend/.venv
+/backend/media/pictures/*
+/backend/.flake8
+/backend/db.sqlite3

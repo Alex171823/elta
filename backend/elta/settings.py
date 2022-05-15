@@ -10,9 +10,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-qc7%47rh_2xd-*#0geyb0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ("DJANGO_DEBUG", "") != "False"
 
-ALLOWED_HOSTS = []
-# Application definition
+ALLOWED_HOSTS = ['0.0.0.0',     # Docker required
+                '127.0.0.1',    # Localhost required
+                ]
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,6 +25,7 @@ INSTALLED_APPS = [
 
     'site_app.apps.SiteAppConfig',
     'quizzes.apps.QuizzesConfig',
+    'events.apps.EventsConfig',
 
     'django_extensions',
 
@@ -57,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'elta.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

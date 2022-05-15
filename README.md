@@ -1,36 +1,33 @@
 # Elta project
 
-## Set up the environment
+## Running using [docker](https://www.docker.com/) + [docker-compose](https://docs.docker.com/compose/)
 
-Make sure you have python3, pip and all dependencies installed on your machine.
-
-For linux:
+In your projects directory:
 
 ```bash
-# clone the repository
 git clone https://github.com/Alex171823/elta.git
-
-#go to project folder
-cd backend
+cd elta
+docker-compose up
 ```
 
-# make virtual environment
-python3 -m venv .env
+To rebuild image:
 
-# activate vitrual environment
-source .env/bin/activate
+```bash
+docker-compose up --build
+```
 
-# install dependencies.
-pip install -r requirements.txt
+## Running only backend without docker
 
-# make migrations to database. SQLite database will be created automatically 
-# in the project folder
-python manage.py makemigrations
-python manage.py migrate
+This requres [poetry](https://python-poetry.org/) + [python3](https://www.python.org/) + pip being installed on your computer
 
-# create superuser
-python manage.py createsuperuser
+```bash
+git clone https://github.com/Alex171823/elta.git
+cd elta/backend
 
-# run
-python manage.py runserver
+# create and activate .venv in backend directory
+poetry shell
+# install dependencies
+poetry install
+# run server
+python3 manage.py runserver
 ```

@@ -1,8 +1,5 @@
-import os
-
 from django.contrib.auth.models import User
 from django.db import models
-from django.dispatch import receiver
 
 
 class UserExtraData(models.Model):
@@ -19,7 +16,6 @@ class UserExtraData(models.Model):
         return f"{self.user} {self.phone_number} {self.date_birth} {self.rating}"
 
 
-# OVERWRITE DELETE METHOD
 class UserImages(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='pictures')
@@ -31,17 +27,6 @@ class UserImages(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.picture} {self.date_uploaded}"
-
-
-@receiver(models.signals.post_delete, sender=UserImages)
-def auto_delete_file_on_delete(sender, instance, **kwargs):
-    """
-    Deletes file from filesystem
-    when corresponding `UserImages` object is deleted.
-    """
-    if instance.picture:
-        if os.path.isfile(instance.picture.path):
-            os.remove(instance.picture.path)
 
 
 class Contest(models.Model):
@@ -62,7 +47,6 @@ class Contest(models.Model):
 
 
 class Votes(models.Model):
-    # Changed to fk
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE)
     votes_left = models.IntegerField(default=3)
